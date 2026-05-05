@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Category;
 
 class Event extends Model
 {
@@ -11,6 +12,7 @@ class Event extends Model
         'location', 'price', 'stock', 'poster_path'
     ];
 
+    // Menandakan atribut: 1 Event harus terpaut pada satu wujud Kategori
     public function category()
     {
         return $this->belongsTo(Category::class);

@@ -8,10 +8,10 @@
                 class="inline-block px-4 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-sm font-bold uppercase tracking-wider">#1
                 Event Platform</span>
             <h1 class="text-5xl md:text-7xl font-extrabold leading-tight">
-                Temukan & Pesan <span class="text-indigo-600">Tiket Event</span> Impianmu.
+                Temukan &amp; Pesan <span class="text-indigo-600">Tiket Event</span> Impianmu.
             </h1>
             <p class="text-lg text-slate-500 max-w-lg leading-relaxed">
-                Dari konser musik hingga workshop teknologi, semua ada di genggamanmu. Pesan aman & cepat dengan
+                Dari konser musik hingga workshop teknologi, semua ada di genggamanmu. Pesan aman &amp; cepat dengan
                 Midtrans.
             </p>
             <div class="flex gap-4">
@@ -54,103 +54,66 @@
 
     <!-- Events Grid -->
     <section id="events" class="max-w-7xl mx-auto px-6 py-20">
-        <div class="flex justify-between items-end mb-12">
-            <div>
-                <h2 class="text-3xl font-extrabold mb-2">Event Terdekat</h2>
-                <p class="text-slate-500 font-medium">Jangan sampai ketinggalan acara seru minggu ini!</p>
-            </div>
-            <div class="flex gap-2">
-                <button class="p-3 border rounded-xl hover:bg-white hover:shadow-md transition">Semua Kategori</button>
-            </div>
+
+        <!-- Heading Section -->
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-extrabold mb-2">Event Terdekat</h2>
+            <p class="text-slate-500 font-medium">Jangan sampai ketinggalan acara seru minggu ini!</p>
         </div>
 
+        <!-- Blok Navigasi Filter Kategori -->
+        <div class="mb-10 flex gap-3 justify-center flex-wrap">
+            <!-- Rujukan awal navigasi bebas bawaan -->
+            <a href="/"
+                class="px-5 py-2 rounded-full font-semibold text-sm transition-all duration-200 shadow-sm
+                {{ !request()->query('category')
+                    ? 'bg-indigo-600 text-white shadow-indigo-200 shadow-md'
+                    : 'bg-white border border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600' }}">
+                Semua Kategori
+            </a>
+
+            <!-- Melakukan iterasi nama Tab Kategori dinamis saat jumlah data bertambah -->
+            @foreach($categories as $cat)
+                <a href="/?category={{ $cat->slug }}"
+                    class="px-5 py-2 rounded-full font-semibold text-sm transition-all duration-200 shadow-sm
+                    {{ request()->query('category') === $cat->slug
+                        ? 'bg-indigo-600 text-white shadow-indigo-200 shadow-md'
+                        : 'bg-white border border-slate-200 text-slate-600 hover:border-indigo-400 hover:text-indigo-600' }}">
+                    {{ $cat->name }}
+                </a>
+            @endforeach
+        </div>
+
+        <!-- Zona Menampilkan Grid List Event -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Event Card 1 -->
+            @foreach($events as $event)
             <div
                 class="group bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden">
                 <div class="relative overflow-hidden aspect-[3/4]">
-                    <img src="{{ asset('assets/concert.png') }}" alt="Jazz Night"
+                    <img src="https://placehold.co/200x600" alt="{{ $event->title }}"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     <div
                         class="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur rounded-lg text-xs font-bold uppercase text-indigo-600">
-                        Musik</div>
+                        {{ $event->category->name }}</div>
                 </div>
                 <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2 group-hover:text-indigo-600 transition">Jazz Night 2024: A
-                        Celebration</h3>
+                    <h3 class="text-xl font-bold mb-2 group-hover:text-indigo-600 transition">{{ $event->title }}</h3>
                     <div class="flex items-center gap-2 text-slate-500 text-sm mb-4">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <span>16 November 2024, 19:30</span>
+                        <span>{{ \Carbon\Carbon::parse($event->date)->format('d-m-Y H:i') }}</span>
                     </div>
                     <div class="flex justify-between items-center pt-4 border-t">
-                        <span class="text-2xl font-black text-indigo-600">Rp 150rb</span>
-                        <a href="{{ route('events.show') }}"
+                        <span class="text-2xl font-black text-indigo-600">Rp {{ number_format($event->price, 0, ',', '.') }}</span>
+                        <a href="{{ url('event/' . $event->id) }}"
                             class="px-5 py-2 bg-indigo-50 text-indigo-600 rounded-xl font-bold hover:bg-indigo-600 hover:text-white transition">Lihat
                             Detail</a>
                     </div>
                 </div>
             </div>
-
-            <!-- Event Card 2 -->
-            <div
-                class="group bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden">
-                <div class="relative overflow-hidden aspect-[3/4]">
-                    <img src="{{ asset('assets/workshop.png') }}" alt="AI & Future"
-                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div
-                        class="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur rounded-lg text-xs font-bold uppercase text-indigo-600">
-                        Technology</div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2 group-hover:text-indigo-600 transition">AI & Future: Unleash The
-                        Power</h3>
-                    <div class="flex items-center gap-2 text-slate-500 text-sm mb-4">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span>26 October 2024, 09:00</span>
-                    </div>
-                    <div class="flex justify-between items-center pt-4 border-t">
-                        <span class="text-2xl font-black text-indigo-600">Rp 50rb</span>
-                        <a href="{{ route('events.show') }}"
-                            class="px-5 py-2 bg-indigo-50 text-indigo-600 rounded-xl font-bold hover:bg-indigo-600 hover:text-white transition">Lihat
-                            Detail</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Event Card 3 -->
-            <div
-                class="group bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden">
-                <div class="relative overflow-hidden aspect-[3/4]">
-                    <img src="{{ asset('assets/hackathon.png') }}" alt="Hackathon 2024"
-                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div
-                        class="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur rounded-lg text-xs font-bold uppercase text-indigo-600">
-                        Coding</div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2 group-hover:text-indigo-600 transition">Hackathon 2024: Ultimate
-                        Marathon</h3>
-                    <div class="flex items-center gap-2 text-slate-500 text-sm mb-4">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span>18-20 October 2024</span>
-                    </div>
-                    <div class="flex justify-between items-center pt-4 border-t">
-                        <span class="text-2xl font-black text-indigo-600">Gratis</span>
-                        <a href="{{ route('events.show') }}"
-                            class="px-5 py-2 bg-indigo-50 text-indigo-600 rounded-xl font-bold hover:bg-indigo-600 hover:text-white transition">Lihat
-                            Detail</a>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </section>
 @endsection
