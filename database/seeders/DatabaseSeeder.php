@@ -98,5 +98,8 @@ class DatabaseSeeder extends Seeder
             'stock' => 100,
             'poster_path' => 'posters/jazz-night.jpg',
         ]);
+
+        // 4. Seed data partner fiktif via PartnerSeeder
+        $this->call(PartnerSeeder::class);
     }
 }
