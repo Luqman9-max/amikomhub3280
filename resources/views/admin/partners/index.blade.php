@@ -13,6 +13,20 @@
     <div class="bg-green-100 text-green-700 p-4 rounded mb-5 border border-green-200">{{ session('success') }}</div>
     @endif
 
+    {{-- Search Form --}}
+    <form method="GET" action="{{ route('admin.partners.index') }}" class="mb-6 flex gap-4 bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama partner..."
+            class="flex-1 px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition text-sm">
+        <button type="submit" class="bg-indigo-600 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-indigo-700 transition text-sm">
+            Cari
+        </button>
+        @if(request('search'))
+            <a href="{{ route('admin.partners.index') }}" class="bg-gray-100 text-gray-700 border border-gray-200 px-5 py-2.5 rounded-lg font-semibold hover:bg-gray-200 transition text-sm flex items-center">
+                Reset
+            </a>
+        @endif
+    </form>
+
     <div class="overflow-x-auto">
         <table class="w-full bg-white rounded-lg shadow-sm border border-gray-200 text-left">
             <thead>
@@ -25,7 +39,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($partners as $partner)
+                @forelse($partners as $partner)
                 <tr class="border-b border-gray-100 hover:bg-gray-50">
                     <td class="p-4 text-gray-500">{{ $loop->iteration }}</td>
                     <td class="p-4">
@@ -50,7 +64,11 @@
                         </form>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="5" class="p-8 text-center text-gray-500 font-medium">Tidak ada partner ditemukan.</td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

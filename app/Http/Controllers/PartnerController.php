@@ -10,9 +10,15 @@ class PartnerController extends Controller
     /**
      * Menampilkan daftar semua partner menggunakan Eloquent.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $partners = Partner::all();
+        $search = $request->input('search');
+
+        if ($search) {
+            $partners = Partner::where('name', 'LIKE', '%' . $search . '%')->get();
+        } else {
+            $partners = Partner::all();
+        }
 
         return view('admin.partners.index', compact('partners'));
     }

@@ -88,7 +88,7 @@ class DatabaseSeeder extends Seeder
             'poster_path' => 'posters/creative-fest.jpg',
         ]);
 
-        \App\Models\Event::create([
+        $event6 = \App\Models\Event::create([
             'category_id' => $category3->id,
             'title' => 'Music Performance: Jazz Night 2025',
             'description' => 'Nikmati malam yang indah dengan alunan musik jazz dari musisi ternama.',
@@ -97,6 +97,37 @@ class DatabaseSeeder extends Seeder
             'price' => 50000,
             'stock' => 100,
             'poster_path' => 'posters/jazz-night.jpg',
+        ]);
+
+        // 3.5 Seed beberapa data transaksi fiktif agar Laporan Transaksi tidak kosong
+        \App\Models\Transaction::create([
+            'event_id' => $event6->id,
+            'order_id' => 'TRX-99210',
+            'customer_name' => 'Donni Prabowo',
+            'customer_email' => 'donni@example.com',
+            'customer_phone' => '081234567890',
+            'total_price' => 50000,
+            'status' => 'Success',
+        ]);
+
+        \App\Models\Transaction::create([
+            'event_id' => $event6->id,
+            'order_id' => 'TRX-99209',
+            'customer_name' => 'Maya Sari',
+            'customer_email' => 'maya@example.com',
+            'customer_phone' => '082345678901',
+            'total_price' => 50000,
+            'status' => 'Pending',
+        ]);
+
+        \App\Models\Transaction::create([
+            'event_id' => $event6->id,
+            'order_id' => 'TRX-99208',
+            'customer_name' => 'Budi Santoso',
+            'customer_email' => 'budi@example.com',
+            'customer_phone' => '083456789012',
+            'total_price' => 0,
+            'status' => 'Success',
         ]);
 
         // 4. Seed data partner fiktif via PartnerSeeder

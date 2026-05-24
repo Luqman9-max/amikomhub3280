@@ -116,4 +116,25 @@
             @endforeach
         </div>
     </section>
+
+    <!-- Partners & Collaborators Section -->
+    <section class="max-w-7xl mx-auto px-6 py-20 border-t border-slate-100 bg-slate-50/30 rounded-[3rem] my-10">
+        <div class="text-center mb-12">
+            <span class="inline-block px-4 py-1.5 bg-indigo-50 text-indigo-700 rounded-full text-xs font-bold uppercase tracking-wider mb-3">Kolaborasi Kami</span>
+            <h2 class="text-3xl font-extrabold text-slate-900">Partner &amp; Kolaborator</h2>
+            <p class="text-slate-500 font-medium mt-2">Didukung oleh berbagai instansi dan partner terpercaya untuk menyukseskan event Anda.</p>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 justify-center">
+            @forelse($partners as $partner)
+                <div class="group flex flex-col items-center justify-center p-6 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:scale-105 transition-all duration-300">
+                    <div class="w-20 h-20 bg-slate-50 rounded-2xl flex items-center justify-center p-2 mb-4 group-hover:bg-indigo-50 transition duration-300 overflow-hidden">
+                        <img src="{{ $partner->logo_url }}" alt="Logo {{ $partner->name }}" class="w-full h-full object-contain filter grayscale group-hover:grayscale-0 transition duration-300">
+                    </div>
+                    <span class="text-sm font-bold text-slate-700 group-hover:text-indigo-600 transition text-center line-clamp-1">{{ $partner->name }}</span>
+                </div>
+            @empty
+                <div class="col-span-full text-center text-slate-500 font-medium py-10">Belum ada partner pendukung.</div>
+            @endforelse
+        </div>
+    </section>
 @endsection
