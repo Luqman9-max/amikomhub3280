@@ -14,7 +14,7 @@ use App\Http\Controllers\PartnerController;
 // Rute User Area (Publik)
 // ─────────────────────────────────────────
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/event/{id}', [UserEventController::class, 'show'])->name('events.show');
+Route::get('/events/{event}', [UserEventController::class, 'show'])->name('events.show');
 Route::get('/checkout', [UserEventController::class, 'checkout'])->name('checkout');
 Route::get('/my-ticket', [UserEventController::class, 'ticket'])->name('ticket');
 
