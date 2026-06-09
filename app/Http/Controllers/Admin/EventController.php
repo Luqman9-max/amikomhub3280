@@ -32,7 +32,7 @@ class EventController extends Controller
             'location' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|numeric|min:1',
-            'poster' => 'nullable|image|max:2048' // Maksimal 2MB
+            'poster' => 'nullable|mimes:jpg,jpeg,png|max:2048' // Hanya JPG/PNG, maksimal 2MB
         ]);
 
         if ($request->hasFile('poster')) {
@@ -62,7 +62,7 @@ class EventController extends Controller
             'location' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|numeric|min:1',
-            'poster' => 'nullable|image|max:2048'
+            'poster' => 'nullable|mimes:jpg,jpeg,png|max:2048' // Hanya JPG/PNG, maksimal 2MB
         ]);
 
         if ($request->hasFile('poster')) {

@@ -64,8 +64,10 @@
 
         <div class="mb-6">
             <label class="block mb-2 font-medium text-gray-700">Poster Event (Opsional)</label>
-            <input type="file" name="poster" accept="image/*" class="w-full border {{ $errors->has('poster') ? 'border-red-400 bg-red-50' : 'border-gray-300' }} p-2.5 rounded">
-            @error('poster') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+            <input type="file" name="poster" id="posterInput" accept=".jpg,.jpeg,.png"
+                class="w-full border {{ $errors->has('poster') ? 'border-red-400 bg-red-50' : 'border-gray-300' }} p-2.5 rounded">
+            <p id="posterError" class="text-red-500 text-sm mt-1 hidden">❌ Format tidak didukung. Hanya JPG dan PNG yang diperbolehkan.</p>
+            @error('poster') <p class="text-red-500 text-sm mt-1">⚠️ {{ $message }}</p> @enderror
         </div>
 
         <div class="flex justify-end border-t pt-4">
@@ -73,4 +75,25 @@
         </div>
     </form>
 </div>
+
+<script>
+    const posterInput = document.getElementById('posterInput');
+    const posterError = document.getElementById('posterError');
+
+    posterInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (!file) return;
+
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+        const allowedExts = ['.jpg', '.jpeg', '.png'];
+        const ext = '.' + file.name.split('.').pop().toLowerCase();
+
+        if (!allowedTypes.includes(file.type) || !allowedExts.includes(ext)) {
+            posterError.classList.remove('hidden');
+            this.value = ''; // reset input
+        } else {
+            posterError.classList.add('hidden');
+        }
+    });
+</script>
 @endsection
