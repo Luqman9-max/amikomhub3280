@@ -16,6 +16,8 @@ use App\Http\Controllers\PartnerController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/events/{event}', [UserEventController::class, 'show'])->name('events.show');
 Route::get('/checkout', [UserEventController::class, 'checkout'])->name('checkout');
+Route::get('/checkout/{event}', [App\Http\Controllers\CheckoutController::class, 'create'])->name('checkout.create');
+Route::post('/checkout/{event}', [App\Http\Controllers\CheckoutController::class, 'store'])->name('checkout.store');
 Route::get('/my-ticket', [UserEventController::class, 'ticket'])->name('ticket');
 
 // ─────────────────────────────────────────
@@ -36,6 +38,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('categories', CategoryController::class);
         Route::resource('partners', PartnerController::class);
 
-        Route::get('transactions', [DashboardController::class, 'transactions'])->name('transactions');
+        Route::get('transactions', [\App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('transactions.index');
     });
 });
