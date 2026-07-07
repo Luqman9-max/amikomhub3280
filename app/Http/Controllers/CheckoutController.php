@@ -49,6 +49,10 @@ class CheckoutController extends Controller
         \Midtrans\Config::$isProduction = false; // Mode Sandbox!
         \Midtrans\Config::$isSanitized = true;
         \Midtrans\Config::$is3ds = true;
+        \Midtrans\Config::$curlOptions = [
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_HTTPHEADER => [],
+        ];
         // Susun Paket Array Data Transaksi
         $params = [
             'transaction_details' => [
@@ -94,6 +98,9 @@ class CheckoutController extends Controller
         // Validasi status pembayaran asli dari Midtrans (Mencegah manipulasi URL)
         \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
         \Midtrans\Config::$isProduction = false;
+        \Midtrans\Config::$curlOptions = [
+            CURLOPT_SSL_VERIFYPEER => false,
+        ];
 
         try {
             $midtransStatus = \Midtrans\Transaction::status($order_id);

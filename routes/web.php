@@ -22,6 +22,8 @@ Route::get('/payment/{order_id}', [\App\Http\Controllers\CheckoutController::cla
 Route::get('/success/{order_id}', [\App\Http\Controllers\CheckoutController::class, 'success'])->name('checkout.success');
 Route::get('/my-ticket', [UserEventController::class, 'ticket'])->name('ticket');
 
+Route::post('/midtrans/callback', [\App\Http\Controllers\MidtransWebhookController::class, 'handle']);
+
 // ─────────────────────────────────────────
 // Rute Admin Area (Grouping prefix /admin)
 // ─────────────────────────────────────────

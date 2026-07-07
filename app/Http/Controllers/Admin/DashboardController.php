@@ -3,38 +3,28 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-
+use App\Models\Event;
 use App\Models\Transaction;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        return view('admin.dashboard');
-    }
+        // 1. Menjumlahkan semua nominal total_price dari kolom Transaksi Lunas
+        $totalRevenue = Transaction::whereIn('status', ['settlement', 'success'])->sum('total_price');
 
-    public function transactions(Request $request)
-    {
-        $search = $request->input('search');
-        $status = $request->input('status');
+        // 2. Menghitung Berapa orang tamu yang tiketnya sudah Lunas
+        $ticketsSold = Transaction::whereIn('status', ['settlement', 'success'])->count();
 
-        $query = Transaction::with('event');
+        // 3. Menghitung Jumlah Acara Mendatang yang aktif diselenggarakan
+        $activeEvents = Event::where('date', '>=', now())->count();
 
-        if ($search) {
-            $query->where(function($q) use ($search) {
-                $q->where('order_id', 'LIKE', '%' . $search . '%')
-                  ->orWhere('customer_name', 'LIKE', '%' . $search . '%')
-                  ->orWhere('customer_email', 'LIKE', '%' . $search . '%');
-            });
-        }
+        // 4. Menghitung Transaksi Ngadat (Status belum dibayar pelanggan / Expired)
+        $pendingOrders = Transaction::where('status', 'pending')->count();
 
-        if ($status && $status != 'Semua Status') {
-            $query->where('status', $status);
-        }
-
-        $transactions = $query->orderBy('created_at', 'desc')->get();
-
-        return view('admin.transactions', compact('transactions'));
+        // 5. Menyertakan 5 daftar riwayat pesanan (History) paling mutakhir di panel
+        $recentTransactions = Transaction::with('event')->latest()->take(5)->get();
+        
+        return view('admin.dashboard', compact('totalRevenue', 'ticketsSold', 'activeEvents', 'pendingOrders', 'recentTransactions'));
     }
 }
