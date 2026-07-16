@@ -22,6 +22,13 @@ Route::get('/payment/{order_id}', [\App\Http\Controllers\CheckoutController::cla
 Route::get('/success/{order_id}', [\App\Http\Controllers\CheckoutController::class, 'success'])->name('checkout.success');
 Route::get('/my-ticket', [UserEventController::class, 'ticket'])->name('ticket');
 
+// Rute Review Event (Dilindungi Auth)
+Route::middleware(['auth'])->group(function () {
+    Route::post('/events/{event}/reviews', [\App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
+    Route::put('/reviews/{review}', [\App\Http\Controllers\ReviewController::class, 'update'])->name('reviews.update');
+    Route::delete('/reviews/{review}', [\App\Http\Controllers\ReviewController::class, 'destroy'])->name('reviews.destroy');
+});
+
 Route::post('/midtrans/callback', [\App\Http\Controllers\MidtransWebhookController::class, 'handle']);
 
 // ─────────────────────────────────────────

@@ -46,6 +46,23 @@
     </div>
 </div>
 
+</div>
+
+<!-- Charts Section -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+    <!-- User Growth Chart -->
+    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+        <h3 class="font-black text-xl mb-4">Pertumbuhan Pengguna</h3>
+        <canvas id="userGrowthChart" height="250"></canvas>
+    </div>
+
+    <!-- Event Growth Chart -->
+    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+        <h3 class="font-black text-xl mb-4">Pertumbuhan Event</h3>
+        <canvas id="eventGrowthChart" height="250"></canvas>
+    </div>
+</div>
+
 <!-- Latest Sales Table -->
 <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
     <div class="p-8 border-b flex justify-between items-center">
@@ -100,4 +117,64 @@
         </table>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const months = @json($months);
+    const userCounts = @json($userCounts);
+    const eventCounts = @json($eventCounts);
+
+    // User Growth Chart
+    const userCtx = document.getElementById('userGrowthChart').getContext('2d');
+    new Chart(userCtx, {
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: [{
+                label: 'Pengguna Baru',
+                data: userCounts,
+                borderColor: '#4f46e5',
+                backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1 } }
+            }
+        }
+    });
+
+    // Event Growth Chart
+    const eventCtx = document.getElementById('eventGrowthChart').getContext('2d');
+    new Chart(eventCtx, {
+        type: 'bar',
+        data: {
+            labels: months,
+            datasets: [{
+                label: 'Event Dibuat',
+                data: eventCounts,
+                backgroundColor: '#f97316',
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1 } }
+            }
+        }
+    });
+</script>
 @endsection

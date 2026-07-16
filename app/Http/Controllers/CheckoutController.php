@@ -127,6 +127,19 @@ class CheckoutController extends Controller
                             } catch (\Exception $e) {
                                 \Log::error('Gagal mengirim email E-Ticket secara manual (Bypass): ' . $e->getMessage());
                             }
+                            
+                            // Kirim Notifikasi WhatsApp
+                            try {
+                                $waMessage = "Halo {$transaction->customer_name},\n\n";
+                                $waMessage .= "Terima kasih atas pembayaran Anda. Tiket untuk acara *{$transaction->event->title}* telah berhasil dikonfirmasi!\n\n";
+                                $waMessage .= "Order ID: {$transaction->order_id}\n";
+                                $waMessage .= "Cek email Anda ({$transaction->customer_email}) untuk melihat E-Ticket lengkapnya.\n\n";
+                                $waMessage .= "Sampai jumpa di lokasi acara!";
+                                
+                                \App\Services\FonnteService::sendMessage($transaction->customer_phone, $waMessage);
+                            } catch (\Exception $e) {
+                                \Log::error('Gagal mengirim WhatsApp E-Ticket: ' . $e->getMessage());
+                            }
                         }
                     }
                 }
